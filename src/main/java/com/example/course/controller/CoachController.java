@@ -1,6 +1,5 @@
 package com.example.course.controller;
 
-import com.example.course.domain.Coach;
 import com.example.course.domain.dto.CoachInputDto;
 import com.example.course.domain.dto.CoachOutputDto;
 import com.example.course.service.CoachService;
