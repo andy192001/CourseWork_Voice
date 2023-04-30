@@ -29,8 +29,8 @@ public class SubscriptionController {
         subscriptionService.save(subscription);
     }
 
-    @PostMapping("/{subscription_id}")
+    @PostMapping("/subscribe/{subscription_id}")
     public void subscribe(@PathVariable("subscription_id") Long id){
-
+        subscriptionService.subscribe(id);
     }
 }
