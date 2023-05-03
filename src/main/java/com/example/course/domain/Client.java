@@ -1,5 +1,6 @@
 package com.example.course.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -51,6 +52,10 @@ public class Client implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "subscription_id")
     private Subscription subscription;
+
+    @OneToMany(mappedBy = "client")
+    @JsonIgnore
+    private List<Lesson> lessons;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private List<Role> roles = new ArrayList<>();

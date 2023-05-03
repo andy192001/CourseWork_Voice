@@ -1,6 +1,7 @@
 package com.example.course.domain;
 
 import com.example.course.domain.dto.CoachInputDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +42,11 @@ public class Coach {
 
     private String phone;
 
+    @OneToMany(mappedBy = "coach")
+    @JsonIgnore
+
+    private List<Lesson> lessons;
+
     @ManyToMany
     @JoinTable(
             name = "coach_genre",
@@ -55,9 +62,4 @@ public class Coach {
         this.phone = command.getPhone();
         this.genreList = genres;
     }
-
-//    public void addGenre(Genre genre){
-//        genre.getCoachList().add(this);
-//        genreList.add(genre);
-//    }
 }

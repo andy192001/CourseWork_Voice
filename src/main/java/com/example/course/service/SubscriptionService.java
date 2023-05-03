@@ -20,7 +20,7 @@ public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final ClientRepository clientRepository;
 
-    private Optional<Client> getCurrentClientByEmail(){
+    private Optional<Client> getCurrentClient(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client principal = (Client) authentication.getPrincipal();
         return clientRepository.findByEmail(principal.getEmail());
@@ -36,7 +36,7 @@ public class SubscriptionService {
 
     @Transactional
     public void subscribe(Long subscription_id){
-        var client = getCurrentClientByEmail().get();
+        var client = getCurrentClient().get();
         var sub = subscriptionRepository.findById(subscription_id).get();
         client.setSubscription(sub);
         clientRepository.save(client);
