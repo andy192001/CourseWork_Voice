@@ -47,6 +47,9 @@ public class Client implements UserDetails {
 
     private String email;
 
+    @Column(name = "amount_lessons")
+    private Long amountLessons;
+
     private String password;
 
     @ManyToOne

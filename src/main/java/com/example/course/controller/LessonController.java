@@ -4,6 +4,7 @@ import com.example.course.domain.Lesson;
 import com.example.course.domain.dto.LessonInputDto;
 import com.example.course.service.LessonService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,10 @@ public class LessonController {
     @PostMapping("/book/{lesson_id}")
     public void bookLesson(@PathVariable Long lesson_id){
         lessonService.bookLesson(lesson_id);
+    }
+
+    @DeleteMapping("/{lesson_id}")
+    public void deleteLesson(@PathVariable Long lesson_id){
+        lessonService.deleteLesson(lesson_id);
     }
 }

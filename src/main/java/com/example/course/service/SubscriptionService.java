@@ -2,10 +2,12 @@ package com.example.course.service;
 
 import com.example.course.domain.Client;
 import com.example.course.domain.Subscription;
+import com.example.course.exception.SubscriptionAlreadySubscribedException;
 import com.example.course.repository.ClientRepository;
 import com.example.course.repository.SubscriptionRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,9 +38,15 @@ public class SubscriptionService {
 
     @Transactional
     public void subscribe(Long subscription_id){
-        var client = getCurrentClient().get();
-        var sub = subscriptionRepository.findById(subscription_id).get();
+        Client client = getCurrentClient().get();
+        if(client.getSubscription() != null){
+            throw new SubscriptionAlreadySubscribedException("Client already have subscription");
+        }
+        Subscription sub = subscriptionRepository.findById(subscription_id).get();
+
         client.setSubscription(sub);
+        client.setAmountLessons(sub.getLessonsCount());
+
         clientRepository.save(client);
     }
 }

@@ -4,6 +4,7 @@ import com.example.course.domain.Client;
 import com.example.course.domain.Coach;
 import com.example.course.domain.Lesson;
 import com.example.course.domain.dto.LessonInputDto;
+import com.example.course.exception.RunOutOfLessonsException;
 import com.example.course.repository.ClientRepository;
 import com.example.course.repository.CoachRepository;
 import com.example.course.repository.LessonRepository;
@@ -31,7 +32,7 @@ public class LessonService {
     }
 
     public List<Lesson> getLessons(){
-        return lessonRepository.findAll();
+        return lessonRepository.getAllUnbookedLessons();
     }
 
     public void addLesson(LessonInputDto command){
@@ -44,7 +45,23 @@ public class LessonService {
     public void bookLesson(Long lessonId){
         Client client = getCurrentClient().get();
         Lesson lesson = lessonRepository.findById(lessonId).get();
+
+        if(client.getSubscription() == null){
+            throw new RunOutOfLessonsException("Client run out of lessons");
+        }
+
         lesson.setClient(client);
+        client.setAmountLessons(client.getAmountLessons() - 1);
+
+        if(client.getAmountLessons() == 0){
+            client.setSubscription(null);
+        }
+
+        clientRepository.save(client);
         lessonRepository.save(lesson);
+    }
+
+    public void deleteLesson(Long lesson_id) {
+        lessonRepository.deleteById(lesson_id);
     }
 }
